@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import Miew from 'miew';
 
+import Debug from './Debug';
+import Search from './Search';
 import Terminal from './Terminal';
 import Viewer from './Viewer';
-import Search from './Search';
 
 import '../styles.scss';
 
@@ -31,6 +32,7 @@ const App = () => {
         </div>
         <div className="column">
           <Search />
+          <Debug />
         </div>
       </main>
     </MiewContext.Provider>

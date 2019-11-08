@@ -4,5 +4,9 @@
     "@babel/preset-typescript",
     "@babel/preset-react"
   ],
-  "plugins": ["@babel/plugin-transform-runtime", "const-enum"]
+  "plugins": [
+    "@babel/plugin-transform-runtime",
+    "@babel/plugin-proposal-optional-chaining",
+    "const-enum"
+  ]
 }
