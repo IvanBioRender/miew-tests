@@ -11,6 +11,8 @@
     "build:dev": "webpack --mode development"
   },
   "dependencies": {
+    "jquery": "^3.4.1",
+    "jquery.terminal": "^2.8.0",
     "miew": "^0.8.3",
     "prop-types": "^15.7.2",
     "react": "^16.11.0",
@@ -24,6 +26,7 @@
     "@babel/preset-env": "^7.7.1",
     "@babel/preset-react": "^7.7.0",
     "@babel/preset-typescript": "^7.7.2",
+    "@types/jquery": "^3.3.31",
     "@types/prop-types": "^15.7.3",
     "@types/react": "^16.9.11",
     "@types/react-dom": "^16.9.4",

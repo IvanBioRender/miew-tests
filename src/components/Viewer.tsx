@@ -16,11 +16,18 @@ const Viewer = () => {
     });
 
     if (viewer.init()) {
-      viewer.run();
+      viewer.enableHotKeys(false);
       viewer.motm();
+      viewer.run();
     }
 
     (setViewer as any)(viewer);
+
+    if (process.env.NODE_ENV === 'development') {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      window.Miew = viewer;
+    }
   }, [setViewer]);
 
   return <div id="miew-container" ref={viewContainer} />;

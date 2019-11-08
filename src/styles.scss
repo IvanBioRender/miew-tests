@@ -1,4 +1,5 @@
 @import '~miew/dist/Miew.css';
+@import '~jquery.terminal/css/jquery.terminal.css';
 
 main {
   display: flex;
@@ -14,8 +15,13 @@ section {
 }
 
 div#miew-container {
-  width: 960px;
-  height: 780px;
+  width: 1280px;
+  height: 729px;
 
   margin-right: 20px;
+}
+
+div#terminal-wrapper {
+  height: 250px;
+  overflow: scroll;
 }
