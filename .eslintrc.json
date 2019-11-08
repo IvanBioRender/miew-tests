@@ -22,6 +22,14 @@
     }
   },
   "rules": {
+    "no-console": ["error", {
+      "allow": ["error"]
+    }],
+    "no-useless-constructor": "off",
+    "import/order": ["error", {
+      "newlines-between": "always"
+    }],
+    "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "react/jsx-filename-extension": [
       "error",
