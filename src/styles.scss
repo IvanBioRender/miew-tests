@@ -12,6 +12,7 @@ main {
 
 section {
   border: black 1px solid;
+  text-align: center;
 }
 
 div#miew-container {
@@ -24,4 +25,17 @@ div#miew-container {
 div#terminal-wrapper {
   height: 250px;
   overflow: scroll;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+}
+
+ul {
+  text-align: left;
+}
+
+hr {
+  width: 90%;
 }

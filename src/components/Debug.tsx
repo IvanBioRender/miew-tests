@@ -28,6 +28,8 @@ const Debug = () => {
     <section>
       <h2>Debug</h2>
       <button type="button" onClick={refresh}>Refresh</button>
+      <hr />
+      <h3>Representations</h3>
       <ul>
         {reps.map((rep: Representation) => <li key={genRepKey(rep)}>{JSON.stringify(rep)}</li>)}
       </ul>

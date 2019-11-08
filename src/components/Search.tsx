@@ -12,7 +12,7 @@ const Search = () => {
   const { viewer } = useContext(MiewContext);
 
   const {
-    register, handleSubmit,
+    register, errors, setError, clearError, handleSubmit,
   } = useForm();
 
   const onSubmit = async (data: any) => {
@@ -33,19 +33,25 @@ const Search = () => {
       await (viewer as any).load(search);
     } catch (err) {
       console.error('Error searching:', err);
+      setError('search', 'notFound', 'Error: search not found');
     }
+  };
+
+  const onChange = () => {
+    clearError('search');
   };
 
   return (
     <section>
       <h2>Search</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <input name="search" defaultValue="1CRN" ref={register({ required: true })} />
+        <input name="search" onChange={onChange} defaultValue="3CRN" ref={register({ required: true })} />
         <select name="db" defaultValue="pdb" ref={register({ required: true })}>
           <option value={Database.PDB}>PDB</option>
           <option value={Database.PubChem}>PubChem</option>
         </select>
       </form>
+      {errors.search && <p className="error">{errors.search.message}</p>}
     </section>
   );
 };

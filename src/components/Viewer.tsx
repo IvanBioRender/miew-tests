@@ -12,7 +12,7 @@ const Viewer = () => {
 
     const viewer = new Miew({
       container: viewContainer.current,
-      load: '1crn',
+      load: '3crn',
     });
 
     if (viewer.init()) {
