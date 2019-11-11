@@ -13,13 +13,36 @@ const Viewer = () => {
     const viewer = new Miew({
       container: viewContainer.current,
       load: '3crn',
+      settings: {
+        ao: true,
+        fog: true,
+        axes: false,
+        fxaa: true,
+        resolution: 'high',
+      },
+      reps: [
+        {
+          selector: 'not hetatm',
+          mode: 'CA',
+          colorer: 'SS',
+          material: 'FL',
+        },
+        {
+          selector: 'hetatm and not water',
+          mode: 'BS',
+          colorer: 'EL',
+          material: 'SF',
+        },
+      ],
     });
 
     if (viewer.init()) {
       viewer.enableHotKeys(false);
-      viewer.motm();
       viewer.run();
     }
+
+    viewer.set('outline.on', true);
+    viewer.set('outline.threshold', 0.1);
 
     (setViewer as any)(viewer);
 
