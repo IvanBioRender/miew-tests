@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Miew from 'miew';
 
 import Debug from './Debug';
+import Download from './Download';
 import Search from './Search';
 import Terminal from './Terminal';
 import Viewer from './Viewer';
@@ -32,6 +33,7 @@ const App = () => {
         </div>
         <div className="column">
           <Search />
+          <Download />
           <Debug />
         </div>
       </main>
