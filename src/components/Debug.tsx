@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import Miew, { Representation } from 'miew';
+import { Representation } from 'miew';
 
 import { MiewContext } from './App';
 
@@ -18,8 +18,8 @@ const Debug = () => {
 
   const refresh = () => {
     const curReps = [];
-    for (let i = 0; i < (viewer as Miew).repCount(); i += 1) {
-      curReps.push((viewer as Miew).rep(i));
+    for (let i = 0; i < viewer.repCount(); i += 1) {
+      curReps.push(viewer.rep(i));
     }
     setReps(curReps);
   };

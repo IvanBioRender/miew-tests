@@ -9,20 +9,18 @@ import Viewer from './Viewer';
 
 import '../styles.scss';
 
-type MiewContextValue = {
+interface MiewContextValue {
   viewer: Miew | null;
   setViewer: any | null;
 }
 
-const MIEW_CONTEXT_DEFAULT: MiewContextValue = {
+export const MiewContext = React.createContext<MiewContextValue>({
   viewer: null,
   setViewer: null,
-};
-
-export const MiewContext = React.createContext(MIEW_CONTEXT_DEFAULT);
+});
 
 const App = () => {
-  const [viewer, setViewer] = useState(null);
+  const [viewer, setViewer] = useState<Miew>(null);
 
   return (
     <MiewContext.Provider value={{ viewer, setViewer }}>

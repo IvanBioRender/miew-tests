@@ -53,6 +53,8 @@ declare module 'miew' {
 
      rep(index?: number, rep?: Representation): void | Representation;
 
+     repCount(): number;
+
      script(cmd: string, cb: (str: string) => void, err: (str: string) => void): void;
    }
 }

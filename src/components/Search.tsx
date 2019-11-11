@@ -30,7 +30,7 @@ const Search = () => {
     }
 
     try {
-      await (viewer as any).load(search, { keepRepsInfo: true });
+      await viewer.load(search, { keepRepsInfo: true });
     } catch (err) {
       console.error('Error searching:', err);
       setError('search', 'notFound', 'Error: search not found');

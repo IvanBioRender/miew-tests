@@ -44,7 +44,7 @@ const Viewer = () => {
     viewer.set('outline.on', true);
     viewer.set('outline.threshold', 0.1);
 
-    (setViewer as any)(viewer);
+    setViewer(viewer);
 
     if (process.env.NODE_ENV === 'development') {
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
