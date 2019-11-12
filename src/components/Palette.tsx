@@ -56,6 +56,7 @@ const Palette = () => {
         <label htmlFor="defaultElementColour">Default Element Colour: </label>
         <input
           name="defaultElementColour"
+          type="color"
           defaultValue={`#${DEFAULT_ELEMENT_COLOUR.toString(16)}`}
           ref={register({ required: true })}
         />
@@ -65,6 +66,7 @@ const Palette = () => {
         <label htmlFor="defaultResidueColour">Default Residue Colour: </label>
         <input
           name="defaultResidueColour"
+          type="color"
           defaultValue={`#${DEFAULT_RESIDUE_COLOUR.toString(16)}`}
           ref={register({ required: true })}
         />
@@ -76,6 +78,7 @@ const Palette = () => {
             <label htmlFor={val}>{`${val}: `}</label>
             <input
               name={val}
+              type="color"
               defaultValue={`#${SECONDARY_DEFAULTS[index].toString(16)}`}
               ref={register({ required: true })}
             />
