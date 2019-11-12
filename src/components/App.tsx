@@ -3,6 +3,7 @@ import Miew from 'miew';
 
 import Debug from './Debug';
 import Download from './Download';
+import Palette from './Palette';
 import Search from './Search';
 import Terminal from './Terminal';
 import Viewer from './Viewer';
@@ -29,8 +30,9 @@ const App = () => {
           <Viewer />
           <Terminal />
         </div>
-        <div className="column">
+        <div className="column" id="sidebar">
           <Search />
+          <Palette />
           <Download />
           <Debug />
         </div>

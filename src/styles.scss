@@ -1,6 +1,11 @@
 @import '~miew/dist/Miew.css';
 @import '~jquery.terminal/css/jquery.terminal.css';
 
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
 main {
   display: flex;
 }
@@ -8,6 +13,11 @@ main {
 .column {
   display: flex;
   flex-direction: column;
+
+  &#sidebar {
+    max-height: 100vh;
+    overflow: auto;
+  }
 }
 
 section {
@@ -26,7 +36,8 @@ div#miew-container {
 
 div#terminal-wrapper {
   height: 250px;
-  overflow: scroll;
+  overflow: auto;
+  width: 99%;
 }
 
 .error {

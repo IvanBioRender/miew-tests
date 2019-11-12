@@ -56,5 +56,7 @@ declare module 'miew' {
      repCount(): number;
 
      script(cmd: string, cb: (str: string) => void, err: (str: string) => void): void;
+
+     getPalettes(): any;
    }
 }
