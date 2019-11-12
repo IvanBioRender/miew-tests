@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useRef } from 'react';
 import Miew from 'miew';
 
+import bioPalette from '../bioPalette';
+
 import { MiewContext } from './App';
 
 const Viewer = () => {
@@ -43,6 +45,8 @@ const Viewer = () => {
 
     viewer.set('outline.on', true);
     viewer.set('outline.threshold', 0.1);
+    viewer.getPalettes().register(bioPalette);
+    viewer.set('palette', 'BR');
 
     setViewer(viewer);
 
@@ -50,6 +54,7 @@ const Viewer = () => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
       window.Miew = viewer;
+      window.bioPalette = bioPalette;
     }
   }, [setViewer]);
 
