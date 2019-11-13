@@ -9,6 +9,7 @@ import BioPalette from '../BioPalette';
 
 import { MiewContext } from './App';
 
+const DEFAULT_OUTLINE_ENABLED = true;
 const DEFAULT_OUTLINE_THRESHOLD = 0.1;
 
 const DEFAULT_ELEMENT_COLOUR: number = BioPalette.defaultElementColor;
@@ -27,6 +28,7 @@ const Palette = () => {
   } = useForm();
 
   const onSubmit = (data: any) => {
+    viewer.set('outline.on', data.outlineEnabled);
     viewer.set('outline.threshold', data.outlineThreshold);
 
     const inputToColour = (input: string) => parseInt((input[0] === '#' ? input.substring(1, 7) : input), 16);
@@ -59,18 +61,34 @@ const Palette = () => {
       <h2>Palette</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
 
-        <label htmlFor="outlineThreshold">Outline Threshold: </label>
-        <p style={{ marginBottom: 0 }}>{Number(watch('outlineThreshold')).toFixed(3)}</p>
+        <h3>Outline</h3>
+
+        <label htmlFor="outlineEnabled">Enabled: </label>
+        <input
+          name="outlineEnabled"
+          type="checkbox"
+          ref={register({})}
+          defaultChecked={DEFAULT_OUTLINE_ENABLED}
+        />
+
+        <br />
+        <br />
+
+        <label htmlFor="outlineThreshold">Threshold: </label>
+        <span style={{ marginBottom: 0 }}>{Number(watch('outlineThreshold')).toFixed(3)}</span>
+        <br />
         <input
           name="outlineThreshold"
           type="range"
           min="0"
-          max="0.5"
+          max="1"
           step="0.005"
           defaultValue={DEFAULT_OUTLINE_THRESHOLD}
           ref={register({ required: true })}
         />
         <br />
+
+        <h3>Colours</h3>
 
         <label htmlFor="defaultElementColour">Default Element Colour: </label>
         <input
@@ -91,7 +109,7 @@ const Palette = () => {
         />
         <br />
 
-        <h3>Secondary</h3>
+        <h4>Secondary</h4>
         {SECONDARY_COLOURS.map((val, index) => (
           <React.Fragment key={val}>
             <label htmlFor={val}>{`${val}: `}</label>
