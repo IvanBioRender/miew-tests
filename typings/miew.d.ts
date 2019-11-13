@@ -51,7 +51,9 @@ declare module 'miew' {
 
      screenshot(width?: number, height?: number): string;
 
-     rep(index?: number, rep?: Representation): void | Representation;
+     rep(index: number, rep?: Representation): void | Representation;
+
+     rep(rep?: Representation): void | Representation;
 
      repCount(): number;
 

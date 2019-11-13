@@ -29,6 +29,7 @@
     "import/order": ["error", {
       "newlines-between": "always"
     }],
+    "no-dupe-class-members": "off",
     "jsx-a11y/control-has-associated-label": "off",
     "jsx-a11y/label-has-associated-control": "off",
     "@typescript-eslint/no-explicit-any": "off",

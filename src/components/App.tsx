@@ -4,6 +4,7 @@ import Miew from 'miew';
 import Debug from './Debug';
 import Download from './Download';
 import Palette from './Palette';
+import Representation from './Representation';
 import Search from './Search';
 import Terminal from './Terminal';
 import Viewer from './Viewer';
@@ -32,6 +33,7 @@ const App = () => {
         </div>
         <div className="column" id="sidebar">
           <Search />
+          <Representation />
           <Palette />
           <Download />
           <Debug />
