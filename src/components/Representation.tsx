@@ -143,7 +143,7 @@ const Representation = () => {
         <label htmlFor="mode">Display mode: </label>
         <select name="mode" defaultValue={DEFAULT_DISPLAY_MODE} ref={register({ required: true })}>
           {DISPLAY_MODES.map((group) => (
-            <optgroup label={group.label}>
+            <optgroup key={group.label} label={group.label}>
               {group.modes.map((mode) => (
                 <option key={mode.id} value={mode.id}>{mode.name}</option>
               ))}
