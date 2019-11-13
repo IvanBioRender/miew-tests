@@ -9,6 +9,8 @@ import BioPalette from '../BioPalette';
 
 import { MiewContext } from './App';
 
+const DEFAULT_OUTLINE_THRESHOLD = 0.1;
+
 const DEFAULT_ELEMENT_COLOUR: number = BioPalette.defaultElementColor;
 const DEFAULT_RESIDUE_COLOUR: number = BioPalette.defaultResidueColor;
 
@@ -20,9 +22,13 @@ const SECONDARY_DEFAULTS = SECONDARY_COLOURS.map((val) => (
 const Palette = () => {
   const { viewer } = useContext(MiewContext);
 
-  const { register, handleSubmit, getValues } = useForm();
+  const {
+    register, handleSubmit, getValues, watch,
+  } = useForm();
 
   const onSubmit = (data: any) => {
+    viewer.set('outline.threshold', data.outlineThreshold);
+
     const inputToColour = (input: string) => parseInt((input[0] === '#' ? input.substring(1, 7) : input), 16);
 
     // Default element colour
@@ -44,14 +50,27 @@ const Palette = () => {
     viewer.set('palette', BioPalette.id);
   };
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(JSON.stringify(getValues(), null, 4));
+  const copyToClipboard = async () => {
+    await navigator.clipboard.writeText(JSON.stringify(getValues(), null, 4));
   };
 
   return (
     <section>
       <h2>Palette</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
+
+        <label htmlFor="outlineThreshold">Outline Threshold: </label>
+        <p style={{ marginBottom: 0 }}>{Number(watch('outlineThreshold')).toFixed(3)}</p>
+        <input
+          name="outlineThreshold"
+          type="range"
+          min="0"
+          max="0.5"
+          step="0.005"
+          defaultValue={DEFAULT_OUTLINE_THRESHOLD}
+          ref={register({ required: true })}
+        />
+        <br />
 
         <label htmlFor="defaultElementColour">Default Element Colour: </label>
         <input
