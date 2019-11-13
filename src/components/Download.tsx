@@ -62,7 +62,19 @@ const Download = () => {
       const iData = ctx.createImageData(canvas.width, canvas.height);
       for (let i = 0; i < iData.data.length; i += 1) iData.data[i] = data[i];
       ctx.putImageData(iData, 0, 0);
-      window.open(canvas.toDataURL());
+
+      // Open export in a new tab
+      if (typeof InstallTrigger !== 'undefined') {
+        // Firefox
+        window.open(canvas.toDataURL());
+      } else {
+        // Other browsers
+        const openImg = new Image();
+        openImg.src = canvas.toDataURL();
+        const w = window.open('');
+        w.document.write(openImg.outerHTML);
+        w.document.close();
+      }
     };
     // Load screenshot
     img.src = screenshot;
