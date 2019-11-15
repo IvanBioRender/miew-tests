@@ -34,6 +34,18 @@ declare module 'miew' {
     keepRepsInfo?: boolean;
   }
 
+  interface GetStateOpts {
+    compact?: boolean;
+    settings?: boolean;
+    view?: boolean;
+  }
+
+  export interface State {
+    load: string;
+    reps: Representation[];
+    view?: string;
+  }
+
    export default class Miew {
      constructor(opts: Opts);
 
@@ -57,8 +69,14 @@ declare module 'miew' {
 
      repCount(): number;
 
+     resetReps(preset?: string): void;
+
      script(cmd: string, cb: (str: string) => void, err: (str: string) => void): void;
 
      getPalettes(): any;
+
+     getState(opts?: GetStateOpts): State;
+
+     view(exp?: string): string | void;
    }
 }

@@ -5,6 +5,7 @@ import Debug from './Debug';
 import Download from './Download';
 import Palette from './Palette';
 import Representation from './Representation';
+import SaveLoad from './SaveLoad';
 import Search from './Search';
 import Terminal from './Terminal';
 import Viewer from './Viewer';
@@ -36,6 +37,7 @@ const App = () => {
           <Representation />
           <Palette />
           <Download />
+          <SaveLoad />
           <Debug />
         </div>
       </main>
