@@ -10,6 +10,7 @@ import BioPalette from '../BioPalette';
 import { MiewContext } from './App';
 
 const DEFAULT_OUTLINE_ENABLED = true;
+const DEFAULT_OUTLINE_THICKNESS = 1;
 const DEFAULT_OUTLINE_THRESHOLD = 0.1;
 
 const DEFAULT_ELEMENT_COLOUR: number = BioPalette.defaultElementColor;
@@ -34,6 +35,7 @@ const Palette = () => {
 
   const onSubmit = (data: any) => {
     viewer.set('outline.on', data.outlineEnabled);
+    viewer.set('outline.thickness', data.outlineThickness);
     viewer.set('outline.threshold', data.outlineThreshold);
 
     const inputToColour = (input: string) => parseInt((input[0] === '#' ? input.substring(1, 7) : input), 16);
@@ -95,6 +97,20 @@ const Palette = () => {
         />
 
         <br />
+        <br />
+
+        <label htmlFor="outlineThickness">Thickness: </label>
+        <span style={{ marginBottom: 0 }}>{Number(watch('outlineThickness')).toFixed(3)}</span>
+        <br />
+        <input
+          name="outlineThickness"
+          type="range"
+          min="0"
+          max="3"
+          step="0.1"
+          defaultValue={DEFAULT_OUTLINE_THICKNESS}
+          ref={register({ required: true })}
+        />
         <br />
 
         <label htmlFor="outlineThreshold">Threshold: </label>
