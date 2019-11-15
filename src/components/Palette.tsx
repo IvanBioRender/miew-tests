@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import useForm from 'react-hook-form';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
@@ -20,8 +20,13 @@ const SECONDARY_DEFAULTS = SECONDARY_COLOURS.map((val) => (
   BioPalette.secondaryColors[StructuralElement.Type[val.toUpperCase()]]
 ));
 
+const DEFAULT_CHAIN_COLOURS: {val: number; id: string}[] = BioPalette.chainColors.map((col) => (
+  { val: col, id: nanoid() }
+));
+
 const Palette = () => {
   const { viewer } = useContext(MiewContext);
+  const [chainColours, setChainColours] = useState(DEFAULT_CHAIN_COLOURS);
 
   const {
     register, handleSubmit, getValues, watch,
@@ -46,10 +51,28 @@ const Palette = () => {
           colour.toUpperCase()]] = inputToColour(data[colour]);
     });
 
+    // Chain colours
+    const chainColourKeys = Object.keys(getValues()).filter((key) => key.match(/^chainColour/));
+    BioPalette.chainColors = chainColourKeys.map((key) => (
+      parseInt(getValues()[key].substring(1, 7), 16)
+    ));
+
     // Display changes
     BioPalette.id = nanoid();
     viewer.getPalettes().register(BioPalette);
     viewer.set('palette', BioPalette.id);
+  };
+
+  const addColour = () => {
+    setChainColours([...chainColours, { val: 0xFFFFFF, id: nanoid() }]);
+  };
+
+  const removeColour = () => {
+    // eslint-disable-next-line
+    const i = Number(window.prompt('Colour index to remove:')) - 1;
+    if (!i) return;
+
+    setChainColours(chainColours.filter((_, index) => index !== i));
   };
 
   const copyToClipboard = async () => {
@@ -108,21 +131,48 @@ const Palette = () => {
           ref={register({ required: true })}
         />
         <br />
-
-        <h4>Secondary</h4>
-        {SECONDARY_COLOURS.map((val, index) => (
-          <React.Fragment key={val}>
-            <label htmlFor={val}>{`${val}: `}</label>
-            <input
-              name={val}
-              type="color"
-              defaultValue={`#${SECONDARY_DEFAULTS[index].toString(16)}`}
-              ref={register({ required: true })}
-            />
-            <br />
-          </React.Fragment>
-        ))}
         <br />
+
+        <fieldset>
+          <legend>Secondary</legend>
+          {SECONDARY_COLOURS.map((val, index) => (
+            <React.Fragment key={val}>
+              <label htmlFor={val}>{`${val}: `}</label>
+              <input
+                name={val}
+                type="color"
+                defaultValue={`#${SECONDARY_DEFAULTS[index].toString(16)}`}
+                ref={register({ required: true })}
+              />
+              <br />
+            </React.Fragment>
+          ))}
+        </fieldset>
+        <br />
+
+        <fieldset id="chain-colours">
+          <legend>Chain</legend>
+          <button type="button" onClick={addColour}>Add</button>
+          <button type="button" onClick={removeColour}>Remove</button>
+          <br />
+          <br />
+          <div id="chain-colours-grid-wrapper">
+            {chainColours.map((col, index) => (
+              <label key={col.id}>
+                {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
+                {(index + 1).toString().padStart(2, '0')}:
+                <input
+                  name={`chainColour[${index}]`}
+                  type="color"
+                  defaultValue={`#${col.val.toString(16).padStart(6, '0')}`}
+                  ref={register}
+                />
+              </label>
+            ))}
+          </div>
+        </fieldset>
+        <br />
+
         <input type="submit" value="Apply" />
       </form>
       <br />

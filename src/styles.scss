@@ -56,3 +56,19 @@ hr {
 input[name=search] {
   width: 50%;
 }
+
+#chain-colours {
+  button:first-of-type {
+    margin-right: 10px;
+  }
+
+  div#chain-colours-grid-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+
+    input {
+      margin-left: 5px;
+      margin-bottom: 10px;
+    }
+  }
+}
