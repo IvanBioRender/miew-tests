@@ -6,7 +6,7 @@
   "author": "Ivan Fonseca <ivan@biorender.com>",
   "license": "GPL-3.0",
   "scripts": {
-    "start": "webpack-dev-server --mode development",
+    "start": "webpack-dev-server --mode development --open",
     "build": "webpack --mode production",
     "build:dev": "webpack --mode development"
   },
