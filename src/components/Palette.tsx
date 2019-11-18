@@ -100,14 +100,14 @@ const Palette = () => {
         <br />
 
         <label htmlFor="outlineThickness">Thickness: </label>
-        <span style={{ marginBottom: 0 }}>{Number(watch('outlineThickness')).toFixed(3)}</span>
+        <span style={{ marginBottom: 0 }}>{Number(watch('outlineThickness')).toFixed(2)}</span>
         <br />
         <input
           name="outlineThickness"
           type="range"
           min="0"
           max="3"
-          step="0.1"
+          step="0.05"
           defaultValue={DEFAULT_OUTLINE_THICKNESS}
           ref={register({ required: true })}
         />
