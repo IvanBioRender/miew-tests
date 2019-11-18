@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import useForm from 'react-hook-form';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
@@ -8,6 +8,11 @@ import nanoid from 'nanoid';
 import BioPalette from '../BioPalette';
 
 import { MiewContext } from './App';
+
+interface Colour {
+  id: string;
+  val: number;
+}
 
 const DEFAULT_OUTLINE_ENABLED = true;
 const DEFAULT_OUTLINE_THICKNESS = 1;
@@ -21,13 +26,20 @@ const SECONDARY_DEFAULTS = SECONDARY_COLOURS.map((val) => (
   BioPalette.secondaryColors[StructuralElement.Type[val.toUpperCase()]]
 ));
 
-const DEFAULT_CHAIN_COLOURS: {val: number; id: string}[] = BioPalette.chainColors.map((col) => (
+const DEFAULT_MAIN_COLOURS: Colour[] = BioPalette.colors.map((col) => (
+  { val: col, id: nanoid() }
+));
+
+const DEFAULT_CHAIN_COLOURS: Colour[] = BioPalette.chainColors.map((col) => (
   { val: col, id: nanoid() }
 ));
 
 const Palette = () => {
   const { viewer } = useContext(MiewContext);
   const [chainColours, setChainColours] = useState(DEFAULT_CHAIN_COLOURS);
+  const [mainColours, setMainColours] = useState(DEFAULT_MAIN_COLOURS);
+
+  useEffect(() => { window.BP = BioPalette; }, []);
 
   const {
     register, handleSubmit, getValues, watch,
@@ -53,6 +65,12 @@ const Palette = () => {
           colour.toUpperCase()]] = inputToColour(data[colour]);
     });
 
+    // Main colours
+    const mainColourKeys = Object.keys(getValues()).filter((key) => key.match(/^mainColour/));
+    BioPalette.colors = mainColourKeys.map((key) => (
+      parseInt(getValues()[key].substring(1, 7), 16)
+    ));
+
     // Chain colours
     const chainColourKeys = Object.keys(getValues()).filter((key) => key.match(/^chainColour/));
     BioPalette.chainColors = chainColourKeys.map((key) => (
@@ -65,13 +83,25 @@ const Palette = () => {
     viewer.set('palette', BioPalette.id);
   };
 
-  const addColour = () => {
+  const addMainColour = () => {
+    setMainColours([...mainColours, { val: 0xFFFFFF, id: nanoid() }]);
+  };
+
+  const removeMainColour = () => {
+    // eslint-disable-next-line
+    const i = Number(window.prompt('Colour index to remove:')) - 1;
+    if (!i) return;
+
+    setMainColours(mainColours.filter((_, index) => index !== i));
+  };
+
+  const addChainColour = () => {
     setChainColours([...chainColours, { val: 0xFFFFFF, id: nanoid() }]);
   };
 
-  const removeColour = () => {
+  const removeChainColour = () => {
     // eslint-disable-next-line
-    const i = Number(window.prompt('Colour index to remove:')) - 1;
+    const i = Number(window.prompt('Chain colour index to remove:')) - 1;
     if (!i) return;
 
     setChainColours(chainColours.filter((_, index) => index !== i));
@@ -166,13 +196,36 @@ const Palette = () => {
         </fieldset>
         <br />
 
-        <fieldset id="chain-colours">
+        <fieldset id="colour-list">
+          <legend>Main</legend>
+          <button type="button" onClick={addMainColour}>Add</button>
+          <button type="button" onClick={removeMainColour}>Remove</button>
+          <br />
+          <br />
+          <div id="colour-list-grid-wrapper">
+            {mainColours.map((col, index) => (
+              <label key={col.id}>
+                {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
+                {(index + 1).toString().padStart(2, '0')}:
+                <input
+                  name={`mainColour[${index}]`}
+                  type="color"
+                  defaultValue={`#${col.val.toString(16).padStart(6, '0')}`}
+                  ref={register}
+                />
+              </label>
+            ))}
+          </div>
+        </fieldset>
+        <br />
+
+        <fieldset id="colour-list">
           <legend>Chain</legend>
-          <button type="button" onClick={addColour}>Add</button>
-          <button type="button" onClick={removeColour}>Remove</button>
+          <button type="button" onClick={addChainColour}>Add</button>
+          <button type="button" onClick={removeChainColour}>Remove</button>
           <br />
           <br />
-          <div id="chain-colours-grid-wrapper">
+          <div id="colour-list-grid-wrapper">
             {chainColours.map((col, index) => (
               <label key={col.id}>
                 {/* eslint-disable-next-line react/jsx-one-expression-per-line */}

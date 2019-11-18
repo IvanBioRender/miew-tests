@@ -57,12 +57,12 @@ input[name=search] {
   width: 50%;
 }
 
-#chain-colours {
+#colour-list {
   button:first-of-type {
     margin-right: 10px;
   }
 
-  div#chain-colours-grid-wrapper {
+  div#colour-list-grid-wrapper {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
 
