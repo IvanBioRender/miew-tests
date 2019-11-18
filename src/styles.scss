@@ -57,12 +57,16 @@ input[name=search] {
   width: 50%;
 }
 
-#colour-list {
+legend {
+  font-weight: bold;
+}
+
+.colour-list {
   button:first-of-type {
     margin-right: 10px;
   }
 
-  div#colour-list-grid-wrapper {
+  div.colour-list-grid-wrapper {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
 

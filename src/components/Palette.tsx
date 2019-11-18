@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import useForm from 'react-hook-form';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
@@ -7,12 +7,8 @@ import nanoid from 'nanoid';
 
 import BioPalette from '../BioPalette';
 
+import ColourList, { Colour } from './ColourList';
 import { MiewContext } from './App';
-
-interface Colour {
-  id: string;
-  val: number;
-}
 
 const DEFAULT_OUTLINE_ENABLED = true;
 const DEFAULT_OUTLINE_THICKNESS = 1;
@@ -34,16 +30,29 @@ const DEFAULT_CHAIN_COLOURS: Colour[] = BioPalette.chainColors.map((col) => (
   { val: col, id: nanoid() }
 ));
 
+const DEFAULT_GRADIENT_RAINBOW_COLOURS: Colour[] = BioPalette.gradients.rainbow.map((col) => (
+  { val: col, id: nanoid() }
+));
+
+const DEFAULT_GRADIENT_TEMP_COLOURS: Colour[] = BioPalette.gradients.temp.map((col) => (
+  { val: col, id: nanoid() }
+));
+
+const DEFAULT_GRADIENT_BLUE_RED_COLOURS: Colour[] = BioPalette.gradients['blue-red'].map((col) => (
+  { val: col, id: nanoid() }
+));
+
 const Palette = () => {
   const { viewer } = useContext(MiewContext);
-  const [chainColours, setChainColours] = useState(DEFAULT_CHAIN_COLOURS);
-  const [mainColours, setMainColours] = useState(DEFAULT_MAIN_COLOURS);
-
-  useEffect(() => { window.BP = BioPalette; }, []);
 
   const {
     register, handleSubmit, getValues, watch,
   } = useForm();
+
+  useEffect(() => {
+    window.BP = BioPalette;
+    window.getValues = getValues;
+  }, [getValues]);
 
   const onSubmit = (data: any) => {
     viewer.set('outline.on', data.outlineEnabled);
@@ -77,34 +86,27 @@ const Palette = () => {
       parseInt(getValues()[key].substring(1, 7), 16)
     ));
 
+    // Gradients
+    // Rainbow
+    const rainbowColourKeys = Object.keys(getValues()).filter((key) => key.match(/^gradientRainbow/));
+    BioPalette.gradients.rainbow = rainbowColourKeys.map((key) => (
+      parseInt(getValues()[key].substring(1, 7), 16)
+    ));
+    // Temperature
+    const tempColourKeys = Object.keys(getValues()).filter((key) => key.match(/^gradientTemperature/));
+    BioPalette.gradients.temp = tempColourKeys.map((key) => (
+      parseInt(getValues()[key].substring(1, 7), 16)
+    ));
+    // Blue-Red
+    const blueRedColourKeys = Object.keys(getValues()).filter((key) => key.match(/^gradientBlueRed/));
+    BioPalette.gradients['blue-red'] = blueRedColourKeys.map((key) => (
+      parseInt(getValues()[key].substring(1, 7), 16)
+    ));
+
     // Display changes
     BioPalette.id = nanoid();
     viewer.getPalettes().register(BioPalette);
     viewer.set('palette', BioPalette.id);
-  };
-
-  const addMainColour = () => {
-    setMainColours([...mainColours, { val: 0xFFFFFF, id: nanoid() }]);
-  };
-
-  const removeMainColour = () => {
-    // eslint-disable-next-line
-    const i = Number(window.prompt('Colour index to remove:')) - 1;
-    if (!i) return;
-
-    setMainColours(mainColours.filter((_, index) => index !== i));
-  };
-
-  const addChainColour = () => {
-    setChainColours([...chainColours, { val: 0xFFFFFF, id: nanoid() }]);
-  };
-
-  const removeChainColour = () => {
-    // eslint-disable-next-line
-    const i = Number(window.prompt('Chain colour index to remove:')) - 1;
-    if (!i) return;
-
-    setChainColours(chainColours.filter((_, index) => index !== i));
   };
 
   const copyToClipboard = async () => {
@@ -196,50 +198,51 @@ const Palette = () => {
         </fieldset>
         <br />
 
-        <fieldset id="colour-list">
-          <legend>Main</legend>
-          <button type="button" onClick={addMainColour}>Add</button>
-          <button type="button" onClick={removeMainColour}>Remove</button>
-          <br />
-          <br />
-          <div id="colour-list-grid-wrapper">
-            {mainColours.map((col, index) => (
-              <label key={col.id}>
-                {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
-                {(index + 1).toString().padStart(2, '0')}:
-                <input
-                  name={`mainColour[${index}]`}
-                  type="color"
-                  defaultValue={`#${col.val.toString(16).padStart(6, '0')}`}
-                  ref={register}
-                />
-              </label>
-            ))}
-          </div>
-        </fieldset>
+        <ColourList
+          name="main"
+          title="Main"
+          description="Affects: ?"
+          defaults={DEFAULT_MAIN_COLOURS}
+          register={register}
+        />
         <br />
 
-        <fieldset id="colour-list">
-          <legend>Chain</legend>
-          <button type="button" onClick={addChainColour}>Add</button>
-          <button type="button" onClick={removeChainColour}>Remove</button>
-          <br />
-          <br />
-          <div id="colour-list-grid-wrapper">
-            {chainColours.map((col, index) => (
-              <label key={col.id}>
-                {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
-                {(index + 1).toString().padStart(2, '0')}:
-                <input
-                  name={`chainColour[${index}]`}
-                  type="color"
-                  defaultValue={`#${col.val.toString(16).padStart(6, '0')}`}
-                  ref={register}
-                />
-              </label>
-            ))}
-          </div>
-        </fieldset>
+        <ColourList
+          name="chain"
+          title="Chain"
+          description="Affects: Chain"
+          defaults={DEFAULT_CHAIN_COLOURS}
+          register={register}
+        />
+        <br />
+
+        <h3>Gradients</h3>
+
+        <ColourList
+          name="gradientRainbow"
+          title="Rainbow"
+          description="Affects: Molecule, Sequence"
+          defaults={DEFAULT_GRADIENT_RAINBOW_COLOURS}
+          register={register}
+        />
+        <br />
+
+        <ColourList
+          name="gradientTemperature"
+          title="Temperature"
+          description="Affects: Temperature"
+          defaults={DEFAULT_GRADIENT_TEMP_COLOURS}
+          register={register}
+        />
+        <br />
+
+        <ColourList
+          name="gradientBlueRed"
+          title="Blue-Red"
+          description="Affects: Hydrophobicity"
+          defaults={DEFAULT_GRADIENT_BLUE_RED_COLOURS}
+          register={register}
+        />
         <br />
 
         <input type="submit" value="Apply" />
