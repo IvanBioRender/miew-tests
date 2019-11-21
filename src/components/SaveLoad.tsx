@@ -36,17 +36,17 @@ const SaveLoad = () => {
     <section>
       <h2>Save/Load</h2>
       <fieldset>
+        <legend>Save</legend>
+        <button type="button" onClick={copyToClipboard}>Copy to clipboard</button>
+      </fieldset>
+      <br />
+
+      <fieldset>
         <legend>Load</legend>
         <textarea placeholder="Paste into here" value={loadText} onChange={handleChange} />
         <br />
         <br />
         <button type="button" onClick={load}>Load</button>
-      </fieldset>
-      <br />
-
-      <fieldset>
-        <legend>Save</legend>
-        <button type="button" onClick={copyToClipboard}>Copy to clipboard</button>
       </fieldset>
     </section>
   );

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import useForm from 'react-hook-form';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
@@ -44,9 +44,14 @@ const DEFAULT_GRADIENT_BLUE_RED_COLOURS: Colour[] = BioPalette.gradients['blue-r
 
 const Palette = () => {
   const { viewer } = useContext(MiewContext);
+  const [loadText, setLoadText] = useState('');
 
   const {
-    register, handleSubmit, getValues, watch,
+    getValues,
+    handleSubmit,
+    register,
+    reset,
+    watch,
   } = useForm();
 
   useEffect(() => {
@@ -112,6 +117,14 @@ const Palette = () => {
   const copyToClipboard = async () => {
     await navigator.clipboard.writeText(JSON.stringify(getValues(), null, 4));
   };
+
+  const load = () => {
+    reset(JSON.parse(loadText));
+  }
+
+  const handleLoadTextChange = (e) => {
+    setLoadText(e.target.value);
+  }
 
   return (
     <section>
@@ -248,7 +261,19 @@ const Palette = () => {
         <input type="submit" value="Apply" />
       </form>
       <br />
-      <button type="button" onClick={copyToClipboard}>Copy to clipboard</button>
+
+      <fieldset>
+        <legend>Save</legend>
+        <button type="button" onClick={copyToClipboard}>Copy to clipboard</button>
+      </fieldset>
+
+      <fieldset>
+        <legend>Load</legend>
+        <textarea placeholder="Pase into here" value={loadText} onChange={handleLoadTextChange} />
+        <br />
+        <br />
+        <button type="button" onClick={load}>Load</button>
+      </fieldset>
     </section>
   );
 };
