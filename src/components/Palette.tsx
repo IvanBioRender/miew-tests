@@ -106,46 +106,45 @@ const Palette = () => {
       <h2>Palette</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
 
-        <h3>Outline</h3>
+        <fieldset>
+          <legend>Outline</legend>
+          <label htmlFor="outlineEnabled">Enabled: </label>
+          <input
+            name="outlineEnabled"
+            type="checkbox"
+            ref={register({})}
+            defaultChecked={DEFAULT_OUTLINE_ENABLED}
+          />
+          <br />
+          <br />
 
-        <label htmlFor="outlineEnabled">Enabled: </label>
-        <input
-          name="outlineEnabled"
-          type="checkbox"
-          ref={register({})}
-          defaultChecked={DEFAULT_OUTLINE_ENABLED}
-        />
+          <label htmlFor="outlineThickness">Thickness: </label>
+          <span style={{ marginBottom: 0 }}>{Number(watch('outlineThickness')).toFixed(2)}</span>
+          <br />
+          <input
+            name="outlineThickness"
+            type="range"
+            min="0"
+            max="3"
+            step="0.05"
+            defaultValue={DEFAULT_OUTLINE_THICKNESS}
+            ref={register({ required: true })}
+          />
+          <br />
 
-        <br />
-        <br />
-
-        <label htmlFor="outlineThickness">Thickness: </label>
-        <span style={{ marginBottom: 0 }}>{Number(watch('outlineThickness')).toFixed(2)}</span>
-        <br />
-        <input
-          name="outlineThickness"
-          type="range"
-          min="0"
-          max="3"
-          step="0.05"
-          defaultValue={DEFAULT_OUTLINE_THICKNESS}
-          ref={register({ required: true })}
-        />
-        <br />
-
-        <label htmlFor="outlineThreshold">Threshold: </label>
-        <span style={{ marginBottom: 0 }}>{Number(watch('outlineThreshold')).toFixed(3)}</span>
-        <br />
-        <input
-          name="outlineThreshold"
-          type="range"
-          min="0"
-          max="1"
-          step="0.005"
-          defaultValue={DEFAULT_OUTLINE_THRESHOLD}
-          ref={register({ required: true })}
-        />
-        <br />
+          <label htmlFor="outlineThreshold">Threshold: </label>
+          <span style={{ marginBottom: 0 }}>{Number(watch('outlineThreshold')).toFixed(3)}</span>
+          <br />
+          <input
+            name="outlineThreshold"
+            type="range"
+            min="0"
+            max="1"
+            step="0.005"
+            defaultValue={DEFAULT_OUTLINE_THRESHOLD}
+            ref={register({ required: true })}
+          />
+        </fieldset>
 
         <h3>Colours</h3>
 
