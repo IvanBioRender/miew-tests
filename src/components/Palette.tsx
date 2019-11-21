@@ -56,7 +56,7 @@ const Palette = () => {
 
   useEffect(() => {
     window.BP = BioPalette;
-    window.getValues = getValues;
+    window.getValues = () => getValues({ nest: true });
   }, [getValues]);
 
   const onSubmit = (data: any) => {
@@ -65,11 +65,9 @@ const Palette = () => {
     viewer.set('outline.threshold', data.outlineThreshold);
 
     const inputToColour = (input: string) => parseInt((input[0] === '#' ? input.substring(1, 7) : input), 16);
+    const colourFieldsToHex = (colours) => colours.map((col) => inputToColour(col));
 
-    // Default element colour
     BioPalette.defaultElementColor = inputToColour(data.defaultElementColour);
-
-    // Default residue colour
     BioPalette.defaultResidueColor = inputToColour(data.defaultResidueColour);
 
     // Secondary Colours
@@ -79,34 +77,11 @@ const Palette = () => {
           colour.toUpperCase()]] = inputToColour(data[colour]);
     });
 
-    // Main colours
-    const mainColourKeys = Object.keys(getValues()).filter((key) => key.match(/^mainColour/));
-    BioPalette.colors = mainColourKeys.map((key) => (
-      parseInt(getValues()[key].substring(1, 7), 16)
-    ));
-
-    // Chain colours
-    const chainColourKeys = Object.keys(getValues()).filter((key) => key.match(/^chainColour/));
-    BioPalette.chainColors = chainColourKeys.map((key) => (
-      parseInt(getValues()[key].substring(1, 7), 16)
-    ));
-
-    // Gradients
-    // Rainbow
-    const rainbowColourKeys = Object.keys(getValues()).filter((key) => key.match(/^gradientRainbow/));
-    BioPalette.gradients.rainbow = rainbowColourKeys.map((key) => (
-      parseInt(getValues()[key].substring(1, 7), 16)
-    ));
-    // Temperature
-    const tempColourKeys = Object.keys(getValues()).filter((key) => key.match(/^gradientTemperature/));
-    BioPalette.gradients.temp = tempColourKeys.map((key) => (
-      parseInt(getValues()[key].substring(1, 7), 16)
-    ));
-    // Blue-Red
-    const blueRedColourKeys = Object.keys(getValues()).filter((key) => key.match(/^gradientBlueRed/));
-    BioPalette.gradients['blue-red'] = blueRedColourKeys.map((key) => (
-      parseInt(getValues()[key].substring(1, 7), 16)
-    ));
+    BioPalette.colors = colourFieldsToHex(data.mainColour);
+    BioPalette.chainColors = colourFieldsToHex(data.chainColour);
+    BioPalette.gradients.rainbow = colourFieldsToHex(data.gradientRainbowColour);
+    BioPalette.gradients.temp = colourFieldsToHex(data.gradientTemperatureColour);
+    BioPalette.gradients['blue-red'] = colourFieldsToHex(data.gradientBlueRedColour);
 
     // Display changes
     BioPalette.id = nanoid();
