@@ -2,13 +2,13 @@ import React, { useContext, useState } from 'react';
 import { State } from 'miew';
 
 import { MiewContext } from './App';
+import SaveLoadFields from './SaveLoadFields';
 
 const SaveLoad = () => {
   const { viewer } = useContext(MiewContext);
   const [loadText, setLoadText] = useState('');
 
-  const load = async () => {
-    const state: State = JSON.parse(loadText);
+  const load = async (state: State) => {
     // Load molecule
     await viewer.load(state.load);
     // Reset and load reps
@@ -19,6 +19,8 @@ const SaveLoad = () => {
 
     setLoadText('');
   };
+
+  const getViewerState = () => viewer.getState({ view: true });
 
   const copyToClipboard = async () => {
     await navigator.clipboard.writeText(
@@ -35,19 +37,7 @@ const SaveLoad = () => {
   return (
     <section>
       <h2>Save/Load</h2>
-      <fieldset>
-        <legend>Save</legend>
-        <button type="button" onClick={copyToClipboard}>Copy to clipboard</button>
-      </fieldset>
-      <br />
-
-      <fieldset>
-        <legend>Load</legend>
-        <textarea placeholder="Paste into here" value={loadText} onChange={handleChange} />
-        <br />
-        <br />
-        <button type="button" onClick={load}>Load</button>
-      </fieldset>
+      <SaveLoadFields getData={getViewerState} loadData={load} />
     </section>
   );
 };
