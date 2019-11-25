@@ -3,6 +3,26 @@ import useForm from 'react-hook-form';
 
 import { MiewContext } from './App';
 
+const DEFAULT_MATERIAL = 'FL';
+const MATERIALS = [
+  {
+    id: 'FL',
+    name: 'Flat',
+  },
+  {
+    id: 'TN',
+    name: 'Toon',
+  },
+  {
+    id: 'SF',
+    name: 'Soft Plastic',
+  },
+  {
+    id: 'GL',
+    name: 'Glass',
+  }
+];
+
 const DEFAULT_OUTLINE_ENABLED = true;
 const DEFAULT_OUTLINE_THICKNESS = 1;
 const DEFAULT_OUTLINE_THRESHOLD = 0.1;
@@ -21,6 +41,8 @@ const Shader = () => {
   } = useForm();
 
   const onSubmit = (data: any) => {
+    viewer.rep(0, { ...viewer.rep(0), material: data.material });
+
     viewer.set('outline.on', data.outlineEnabled);
     viewer.set('outline.thickness', data.outlineThickness);
     viewer.set('outline.threshold', data.outlineThreshold);
@@ -38,6 +60,16 @@ const Shader = () => {
     <section>
       <h2>Shader</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
+
+        <label htmlFor="material">Material: </label>
+        <select name="material" defaultValue={DEFAULT_MATERIAL} ref={register({ required: true })}>
+          {MATERIALS.map((material) => (
+            <option key={material.id} value={material.id}>{material.name}</option>
+          ))}
+        </select>
+        <br />
+        <br />
+
         <fieldset>
           <legend>Outline</legend>
 
