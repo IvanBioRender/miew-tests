@@ -6,6 +6,7 @@ import Download from './Download';
 import Palette from './Palette';
 import Representation from './Representation';
 import SaveLoad from './SaveLoad';
+import Shader from './Shader';
 import Search from './Search';
 import Terminal from './Terminal';
 import Viewer from './Viewer';
@@ -35,6 +36,7 @@ const App = () => {
         <div className="column" id="sidebar">
           <Search />
           <Representation />
+          <Shader />
           <Palette />
           <Download />
           <SaveLoad />
