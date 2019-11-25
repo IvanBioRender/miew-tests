@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import useForm from 'react-hook-form';
 
 import { MiewContext } from './App';
+import SaveLoadFields from './SaveLoadFields';
 
 const DEFAULT_MATERIAL = 'FL';
 const MATERIALS = [
@@ -38,6 +39,8 @@ const Shader = () => {
     handleSubmit,
     register,
     watch,
+    getValues,
+    reset,
   } = useForm();
 
   const onSubmit = (data: any) => {
@@ -157,6 +160,9 @@ const Shader = () => {
 
         <input type="submit" value="Apply" />
       </form>
+      <br />
+
+      <SaveLoadFields getData={getValues} loadData={reset} />
     </section>
   );
 };
