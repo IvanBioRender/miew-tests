@@ -111,7 +111,7 @@ const Palette = () => {
         <fieldset>
           <legend>Secondary</legend>
           {SECONDARY_COLOURS.map((val, index) => (
-            <React.Fragment key={val}>
+            <div className="secondary-colour" key={val}>
               <label htmlFor={val}>{`${val}: `}</label>
               <input
                 name={val}
@@ -120,7 +120,7 @@ const Palette = () => {
                 ref={register({ required: true })}
               />
               <br />
-            </React.Fragment>
+            </div>
           ))}
         </fieldset>
         <br />

@@ -25,6 +25,10 @@ section {
   text-align: center;
   padding: 15px;
   margin-bottom: 20px;
+
+  h2 {
+    margin-top: 0;
+  }
 }
 
 div#miew-container {
@@ -75,4 +79,8 @@ legend {
       margin-bottom: 10px;
     }
   }
+}
+
+div.secondary-colour {
+  margin-bottom: 5px;
 }
