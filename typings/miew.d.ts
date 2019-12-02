@@ -20,7 +20,7 @@ declare module 'miew' {
     zooming?: boolean;
   }
 
-   interface Opts {
+  interface Opts {
     container?: HTMLElement | null;
     load?: string;
     settings?: Settings;
@@ -46,37 +46,47 @@ declare module 'miew' {
     view?: string;
   }
 
-   export default class Miew {
-     constructor(opts: Opts);
+  interface Material {
+    id: string;
+    name: string;
+    shortName: string;
+    values: any;
+    uberOptions?: any;
+  }
 
-     init(): boolean;
+  export default class Miew {
+    constructor(opts: Opts);
 
-     run(): void;
+    init(): boolean;
 
-     enableHotKeys(enabled: boolean): void;
+    run(): void;
 
-     set(params: string | object, value?: any): void;
+    enableHotKeys(enabled: boolean): void;
 
-     get<T>(param: string, value?: T): T;
+    set(params: string | object, value?: any): void;
 
-     load(source: string | File, opts?: LoadOpts): Promise<void>;
+    get<T>(param: string, value?: T): T;
 
-     screenshot(width?: number, height?: number): string;
+    load(source: string | File, opts?: LoadOpts): Promise<void>;
 
-     rep(index: number, rep?: Representation): void | Representation;
+    screenshot(width?: number, height?: number): string;
 
-     rep(rep?: Representation): void | Representation;
+    rep(index: number, rep?: Representation): void | Representation;
 
-     repCount(): number;
+    rep(rep?: Representation): void | Representation;
 
-     resetReps(preset?: string): void;
+    repCount(): number;
 
-     script(cmd: string, cb: (str: string) => void, err: (str: string) => void): void;
+    resetReps(preset?: string): void;
 
-     getPalettes(): any;
+    script(cmd: string, cb: (str: string) => void, err: (str: string) => void): void;
 
-     getState(opts?: GetStateOpts): State;
+    getPalettes(): any;
 
-     view(exp?: string): string | void;
-   }
+    getState(opts?: GetStateOpts): State;
+
+    view(exp?: string): string | void;
+
+    getMaterials(): 
+  }
 }
