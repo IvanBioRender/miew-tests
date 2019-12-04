@@ -27,6 +27,20 @@ const DEFAULT_CHAIN_COLOURS: Colour[] = BioPalette.chainColors.map((col) => (
   { val: col, id: nanoid() }
 ));
 
+const DEFAULT_UNIFORM_INDEX = 0;
+const DEFAULT_UNIFORM_COLOURS: Colour[] = [
+  0xCCF2FF,
+  0xCAFFEA,
+  0xD2FFC4,
+  0xFFF9AA,
+  0xFFDCB9,
+  0xEDD9FF,
+  0xFFFFFF,
+  0xE0E0E0,
+].map((col) => (
+  { val: col, id: nanoid() }
+));
+
 const DEFAULT_GRADIENT_RAINBOW_COLOURS: Colour[] = BioPalette.gradients.rainbow.map((col) => (
   { val: col, id: nanoid() }
 ));
@@ -47,6 +61,7 @@ const Palette = () => {
     handleSubmit,
     register,
     reset,
+    triggerValidation,
     watch,
   } = useForm();
 
@@ -74,6 +89,8 @@ const Palette = () => {
     BioPalette.gradients.rainbow = colourFieldsToHex(data.gradientRainbowColour);
     BioPalette.gradients.temp = colourFieldsToHex(data.gradientTemperatureColour);
     BioPalette.gradients['blue-red'] = colourFieldsToHex(data.gradientBlueRedColour);
+
+    viewer.set('colorers.UN.color', inputToColour(data.uniformColour[data.uniformIndex - 1]));
 
     // Display changes
     BioPalette.id = nanoid();
@@ -142,6 +159,27 @@ const Palette = () => {
           register={register}
         />
         <br />
+
+        <ColourList
+          name="uniform"
+          title="Uniform"
+          description="Affects: Uniform"
+          defaults={DEFAULT_UNIFORM_COLOURS}
+          register={register}
+          triggerValidation={triggerValidation}
+          extraChildren={
+            <label>Active colour:
+              <input
+                type="number"
+                name="uniformIndex"
+                min="1"
+                max={watch('uniformColour')?.length}
+                defaultValue={DEFAULT_UNIFORM_INDEX + 1}
+                ref={register({ required: true })}
+              />
+            </label>
+          }
+        />
 
         <h3>Gradients</h3>
 

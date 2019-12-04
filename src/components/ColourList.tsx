@@ -13,11 +13,15 @@ const ColourList = ({
   description,
   defaults,
   register,
+  extraChildren,
+  triggerValidation,
 }: InferProps<typeof ColourList.propTypes>) => {
   const [colours, setColours] = useState<Colour[]>(defaults);
 
   const addColour = () => {
     setColours([...colours, { val: 0xFFFFFF, id: nanoid() }]);
+    
+    triggerValidation();
   };
 
   const removeColour = () => {
@@ -26,6 +30,8 @@ const ColourList = ({
     if (!i) return;
 
     setColours(colours.filter((_, index) => index !== i));
+
+    triggerValidation();
   };
 
   return (
@@ -50,6 +56,8 @@ const ColourList = ({
           </label>
         ))}
       </div>
+
+      {extraChildren}
     </fieldset>
   );
 };
@@ -63,6 +71,13 @@ ColourList.propTypes = {
     val: PropTypes.number,
   })).isRequired,
   register: PropTypes.func.isRequired,
+  triggerValidation: PropTypes.func.isRequired,
+  extraChildren: PropTypes.element.isRequired,
+};
+
+ColourList.defaultProps = {
+  triggerValidation: () => null,
+  extraChildren: <></>,
 };
 
 export default ColourList;
