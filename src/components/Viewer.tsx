@@ -47,6 +47,9 @@ const Viewer = () => {
     viewer.set('outline.threshold', 0.1);
     viewer.getPalettes().register(BioPalette);
     viewer.set('palette', 'BR');
+    viewer.set('bg.color', 0xFFFFFF);
+    viewer.set('fogColorEnable', true);
+    viewer.set('fogColor', 0x202020);
 
     setViewer(viewer);
 
