@@ -45,6 +45,9 @@ const DEFAULT_TOON_RANGE = {
   HIGH: 0.95,
 };
 
+const DEFAULT_FOG_ENABLED = true;
+const DEFAULT_FOG_COLOUR = 0x202020;
+
 const Shader = () => {
   const { viewer } = useContext(MiewContext);
   const submitRef = useRef(null);
@@ -69,6 +72,8 @@ const Shader = () => {
   }, [submitRef]);
 
   const onSubmit = (data: any) => {
+    const inputToColour = (input: string) => parseInt((input[0] === '#' ? input.substring(1, 7) : input), 16);
+
     viewer.rep(0, { ...viewer.rep(0), material: data.material });
 
     viewer.set('outline.on', data.outlineEnabled);
@@ -99,6 +104,9 @@ const Shader = () => {
     if (data.material === 'TN') {
       viewer.rep(0, { ...viewer.rep(0), material: newMat.id });
     }
+
+    viewer.set('fog', data.fogEnabled);
+    viewer.set('fogColor', inputToColour(data.fogColour));
   };
 
   return (
@@ -272,6 +280,29 @@ const Shader = () => {
             ref={register({ required: true })}
           />
           <br />
+        </fieldset>
+        <br />
+
+        <fieldset>
+          <legend>Fog</legend>
+
+          <label htmlFor="fogEnabled">Enabled: </label>
+          <input
+            name="fogEnabled"
+            type="checkbox"
+            ref={register({})}
+            defaultChecked={DEFAULT_FOG_ENABLED}
+          />
+          <br />
+          <br />
+
+          <label htmlFor="fogColour">Colour: </label>
+          <input
+            name="fogColour"
+            type="color"
+            defaultValue={`#${DEFAULT_FOG_COLOUR.toString(16)}`}
+            ref={register({ required: true })}
+          />
         </fieldset>
         <br />
 
