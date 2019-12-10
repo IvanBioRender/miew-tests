@@ -47,6 +47,8 @@ const DEFAULT_TOON_RANGE = {
 
 const DEFAULT_FOG_ENABLED = true;
 const DEFAULT_FOG_COLOUR = 0x202020;
+const DEFAULT_FOG_NEAR_FACTOR = 0.5;
+const DEFAULT_FOG_FAR_FACTOR = 1.0;
 
 const Shader = () => {
   const { viewer } = useContext(MiewContext);
@@ -107,6 +109,8 @@ const Shader = () => {
 
     viewer.set('fog', data.fogEnabled);
     viewer.set('fogColor', inputToColour(data.fogColour));
+    viewer.set('fogNearFactor', data.fogNearFactor);
+    viewer.set('fogFarFactor', data.fogFarFactor);
   };
 
   return (
@@ -303,6 +307,36 @@ const Shader = () => {
             defaultValue={`#${DEFAULT_FOG_COLOUR.toString(16)}`}
             ref={register({ required: true })}
           />
+          <br />
+          <br />
+
+          <label htmlFor="fogNearFactor">Near Factor: </label>
+          <span style={{ marginBottom: 0 }}>{Number(watch('fogNearFactor')).toFixed(2)}</span>
+          <br />
+          <input
+            name="fogNearFactor"
+            type="range"
+            min="0"
+            max="5"
+            step="0.05"
+            defaultValue={DEFAULT_FOG_NEAR_FACTOR}
+            ref={register({ required: true })}
+          />
+          <br />
+
+          <label htmlFor="fogFarFactor">Far Factor: </label>
+          <span style={{ marginBottom: 0 }}>{Number(watch('fogFarFactor')).toFixed(2)}</span>
+          <br />
+          <input
+            name="fogFarFactor"
+            type="range"
+            min="0"
+            max="5"
+            step="0.05"
+            defaultValue={DEFAULT_FOG_FAR_FACTOR}
+            ref={register({ required: true })}
+          />
+          <br />
         </fieldset>
         <br />
 
