@@ -102,18 +102,18 @@ BioPalette.chainColors = [
   13142606,
   11298394,
   10790069,
-];
+]
 
 const StructuralElementType = StructuralElement.Type;
 
 // HAS SETTING
 BioPalette.secondaryColors = {
   [StructuralElementType.HELIX_ALPHA]: 6854911,
-  [StructuralElementType.HELIX_310]: 4904959,
-  [StructuralElementType.HELIX_PI]: 1560165,
-  [StructuralElementType.STRAND]: 13269503,
-  [StructuralElementType.BRIDGE]: 13798235,
-  [StructuralElementType.TURN]: 13592459,
+  [StructuralElementType.HELIX_310]: 1175245,
+  [StructuralElementType.HELIX_PI]: 8445972,
+  [StructuralElementType.STRAND]: 16752179,
+  [StructuralElementType.BRIDGE]: 13982041,
+  [StructuralElementType.TURN]: 12941517,
 };
 
 BioPalette.gradients.rainbow = [
