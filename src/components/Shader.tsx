@@ -1,10 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import useForm from 'react-hook-form';
 import nanoid from 'nanoid';
 
 
 import { MiewContext } from './App';
 import SaveLoadFields from './SaveLoadFields';
+import { updateSetter, updateSubmit } from '../presetShaders';
 
 const DEFAULT_MATERIAL = 'FL';
 const MATERIALS = [
@@ -46,14 +47,26 @@ const DEFAULT_TOON_RANGE = {
 
 const Shader = () => {
   const { viewer } = useContext(MiewContext);
+  const submitRef = useRef(null);
 
   const {
+    getValues,
     handleSubmit,
     register,
-    watch,
-    getValues,
     reset,
+    setValue,
+    watch,
   } = useForm();
+
+  useEffect(() => {
+    updateSetter(setValue);
+  }, [setValue]);
+
+  useEffect(() => {
+    updateSubmit(() => {
+      submitRef.current.click();
+    });
+  }, [submitRef]);
 
   const onSubmit = (data: any) => {
     viewer.rep(0, { ...viewer.rep(0), material: data.material });
@@ -262,7 +275,7 @@ const Shader = () => {
         </fieldset>
         <br />
 
-        <input type="submit" value="Apply" />
+        <input type="submit" value="Apply" ref={submitRef} />
       </form>
       <br />
 

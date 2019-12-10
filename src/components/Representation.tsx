@@ -2,6 +2,12 @@ import React, { useContext } from 'react';
 import useForm from 'react-hook-form';
 
 import { MiewContext } from './App';
+import {
+  applyFlatShader,
+  applyToonBackboneShader,
+  applyToonBondsShader,
+  applyToonSurfaceShader,
+} from '../presetShaders';
 
 const DEFAULT_DISPLAY_MODE = 'CA';
 const DISPLAY_MODES = [
@@ -126,6 +132,12 @@ const DISPLAY_COLOURS = [
   },
 ];
 
+const getModeCategory = (mode: string) => {
+  if (['LC', 'BS', 'LN', 'VW'].includes(mode)) return 'Bonds';
+  if (['CA', 'TU', 'TR'].includes(mode)) return 'Backbone';
+  if (['QS', 'SA', 'SE', 'CS'].includes(mode)) return 'Surface';
+};
+
 const Representation = () => {
   const { viewer } = useContext(MiewContext);
   const { register, handleSubmit } = useForm();
@@ -133,6 +145,25 @@ const Representation = () => {
   const onSubmit = (data: any) => {
     viewer.rep({ mode: data.mode });
     viewer.rep({ colorer: data.colour });
+
+    const material = viewer.rep(0)?.material;
+    const category = getModeCategory(data.mode);
+
+    if (material === 'FL') {  // Flat
+      applyFlatShader();
+    } else {
+      switch (category) {
+        case 'Bonds':
+          applyToonBondsShader();
+          break;
+        case 'Backbone':
+          applyToonBackboneShader();
+          break;
+        case 'Surface':
+          applyToonSurfaceShader();
+          break;
+      }
+    }
   };
 
   return (
