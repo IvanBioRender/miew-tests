@@ -2,10 +2,10 @@ import React, { useContext, useEffect, useRef } from 'react';
 import useForm from 'react-hook-form';
 import nanoid from 'nanoid';
 
+import { updateSetter, updateSubmit } from '../presetShaders';
 
 import { MiewContext } from './App';
 import SaveLoadFields from './SaveLoadFields';
-import { updateSetter, updateSubmit } from '../presetShaders';
 
 const DEFAULT_MATERIAL = 'FL';
 const MATERIALS = [
@@ -24,7 +24,7 @@ const MATERIALS = [
   {
     id: 'GL',
     name: 'Glass',
-  }
+  },
 ];
 
 const DEFAULT_OUTLINE_ENABLED = true;
@@ -74,7 +74,7 @@ const Shader = () => {
   }, [submitRef]);
 
   const onSubmit = (data: any) => {
-    const inputToColour = (input: string) => parseInt((input[0] === '#' ? input.substring(1, 7) : input), 16);
+    const inputToColour = (input: string) => parseInt(input[0] === '#' ? input.substring(1, 7) : input, 16);
 
     viewer.rep(0, { ...viewer.rep(0), material: data.material });
 
@@ -85,12 +85,15 @@ const Shader = () => {
     // Turn AO off and on again to ensure factor changes
     viewer.set('ao', false);
     viewer.set('debug.ssaoFactor', data.ssaoFactor);
-    viewer.set('debug.ssaoKernelRadius', data.ssaoKernelRadius === 0 ? 0.01 : data.ssaoKernelRadius);
+    viewer.set(
+      'debug.ssaoKernelRadius',
+      data.ssaoKernelRadius === 0 ? 0.01 : data.ssaoKernelRadius,
+    );
     viewer.set('ao', true);
     // Set actual AO enabled
     viewer.set('ao', data.ssaoEnabled);
 
-    let newMat = Object.assign({}, viewer.getMaterials().get('tn'));
+    const newMat = { ...viewer.getMaterials().get('tn') };
     newMat.uberOptions.toonBorder = {
       x: data.toonBorderLow,
       y: data.toonBorderMed,
@@ -113,21 +116,45 @@ const Shader = () => {
     viewer.set('fogFarFactor', data.fogFarFactor);
   };
 
+  const loadOutlinePreset = (type) => {
+    switch (type) {
+      case 'thick':
+        setValue('outlineThickness', 0.7);
+        setValue('outlineThreshold', 0.525);
+        break;
+      case 'medium':
+        setValue('outlineThickness', 0.5);
+        setValue('outlineThreshold', 0.6);
+        break;
+      case 'thin':
+        setValue('outlineThickness', 0.5);
+        setValue('outlineThreshold', 0.3);
+        break;
+    }
+
+    submitRef.current?.click();
+  };
+
   return (
     <section>
       <h2>Shader</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
-
         <label htmlFor="material">Material: </label>
-        <select name="material" defaultValue={DEFAULT_MATERIAL} ref={register({ required: true })}>
+        <select
+          name="material"
+          defaultValue={DEFAULT_MATERIAL}
+          ref={register({ required: true })}
+        >
           {MATERIALS.map((material) => (
-            <option key={material.id} value={material.id}>{material.name}</option>
+            <option key={material.id} value={material.id}>
+              {material.name}
+            </option>
           ))}
         </select>
         <br />
         <br />
 
-        <fieldset>
+        <fieldset id="outline">
           <legend>Outline</legend>
 
           <label htmlFor="outlineEnabled">Enabled: </label>
@@ -140,8 +167,31 @@ const Shader = () => {
           <br />
           <br />
 
+          <button
+            type="button"
+            onClick={() => loadOutlinePreset('thick')}
+          >
+            Thick
+          </button>
+          <button
+            type="button"
+            onClick={() => loadOutlinePreset('medium')}
+          >
+            Medium
+          </button>
+          <button
+            type="button"
+            onClick={() => loadOutlinePreset('thin')}
+          >
+            Thin
+          </button>
+          <br />
+          <br />
+
           <label htmlFor="outlineThickness">Thickness: </label>
-          <span style={{ marginBottom: 0 }}>{Number(watch('outlineThickness')).toFixed(2)}</span>
+          <span style={{ marginBottom: 0 }}>
+            {Number(watch('outlineThickness')).toFixed(2)}
+          </span>
           <br />
           <input
             name="outlineThickness"
@@ -155,7 +205,9 @@ const Shader = () => {
           <br />
 
           <label htmlFor="outlineThreshold">Threshold: </label>
-          <span style={{ marginBottom: 0 }}>{Number(watch('outlineThreshold')).toFixed(3)}</span>
+          <span style={{ marginBottom: 0 }}>
+            {Number(watch('outlineThreshold')).toFixed(3)}
+          </span>
           <br />
           <input
             name="outlineThreshold"
@@ -183,7 +235,9 @@ const Shader = () => {
           <br />
 
           <label htmlFor="ssaoFactor">Factor: </label>
-          <span style={{ marginBottom: 0 }}>{Number(watch('ssaoFactor')).toFixed(2)}</span>
+          <span style={{ marginBottom: 0 }}>
+            {Number(watch('ssaoFactor')).toFixed(2)}
+          </span>
           <br />
           <input
             name="ssaoFactor"
@@ -197,7 +251,9 @@ const Shader = () => {
           <br />
 
           <label htmlFor="ssaoKernelRadius">Kernel Radius: </label>
-          <span style={{ marginBottom: 0 }}>{Number(watch('ssaoKernelRadius')).toFixed(2)}</span>
+          <span style={{ marginBottom: 0 }}>
+            {Number(watch('ssaoKernelRadius')).toFixed(2)}
+          </span>
           <br />
           <input
             name="ssaoKernelRadius"
@@ -216,7 +272,9 @@ const Shader = () => {
           <legend>Toon</legend>
 
           <label htmlFor="toonBorderLow">Toon Border Low: </label>
-          <span style={{ marginBottom: 0 }}>{Number(watch('toonBorderLow')).toFixed(2)}</span>
+          <span style={{ marginBottom: 0 }}>
+            {Number(watch('toonBorderLow')).toFixed(2)}
+          </span>
           <br />
           <input
             name="toonBorderLow"
@@ -230,7 +288,9 @@ const Shader = () => {
           <br />
 
           <label htmlFor="toonBorderMed">Toon Border Medium: </label>
-          <span style={{ marginBottom: 0 }}>{Number(watch('toonBorderMed')).toFixed(2)}</span>
+          <span style={{ marginBottom: 0 }}>
+            {Number(watch('toonBorderMed')).toFixed(2)}
+          </span>
           <br />
           <input
             name="toonBorderMed"
@@ -244,7 +304,9 @@ const Shader = () => {
           <br />
 
           <label htmlFor="toonBorderHigh">Toon Border High: </label>
-          <span style={{ marginBottom: 0 }}>{Number(watch('toonBorderHigh')).toFixed(2)}</span>
+          <span style={{ marginBottom: 0 }}>
+            {Number(watch('toonBorderHigh')).toFixed(2)}
+          </span>
           <br />
           <input
             name="toonBorderHigh"
@@ -258,7 +320,9 @@ const Shader = () => {
           <br />
 
           <label htmlFor="toonRangeMed">Toon Range Medium: </label>
-          <span style={{ marginBottom: 0 }}>{Number(watch('toonRangeMed')).toFixed(2)}</span>
+          <span style={{ marginBottom: 0 }}>
+            {Number(watch('toonRangeMed')).toFixed(2)}
+          </span>
           <br />
           <input
             name="toonRangeMed"
@@ -272,7 +336,9 @@ const Shader = () => {
           <br />
 
           <label htmlFor="toonRangeHigh">Toon Range High: </label>
-          <span style={{ marginBottom: 0 }}>{Number(watch('toonRangeHigh')).toFixed(2)}</span>
+          <span style={{ marginBottom: 0 }}>
+            {Number(watch('toonRangeHigh')).toFixed(2)}
+          </span>
           <br />
           <input
             name="toonRangeHigh"
@@ -311,7 +377,9 @@ const Shader = () => {
           <br />
 
           <label htmlFor="fogNearFactor">Near Factor: </label>
-          <span style={{ marginBottom: 0 }}>{Number(watch('fogNearFactor')).toFixed(2)}</span>
+          <span style={{ marginBottom: 0 }}>
+            {Number(watch('fogNearFactor')).toFixed(2)}
+          </span>
           <br />
           <input
             name="fogNearFactor"
@@ -325,7 +393,9 @@ const Shader = () => {
           <br />
 
           <label htmlFor="fogFarFactor">Far Factor: </label>
-          <span style={{ marginBottom: 0 }}>{Number(watch('fogFarFactor')).toFixed(2)}</span>
+          <span style={{ marginBottom: 0 }}>
+            {Number(watch('fogFarFactor')).toFixed(2)}
+          </span>
           <br />
           <input
             name="fogFarFactor"
