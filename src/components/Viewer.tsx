@@ -49,7 +49,9 @@ const Viewer = () => {
     viewer.set('palette', 'BR');
     viewer.set('bg.color', 0xFFFFFF);
     viewer.set('fogColorEnable', true);
-    viewer.set('fogColor', 0x202020);
+    viewer.set('fogColor', 0x000000);
+    viewer.set('fogNearFactor', 0.25);
+    viewer.set('fogFarFactor', 1.4);
 
     setViewer(viewer);
 

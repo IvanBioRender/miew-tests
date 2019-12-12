@@ -46,9 +46,9 @@ const DEFAULT_TOON_RANGE = {
 };
 
 const DEFAULT_FOG_ENABLED = true;
-const DEFAULT_FOG_COLOUR = 0x202020;
-const DEFAULT_FOG_NEAR_FACTOR = 0.5;
-const DEFAULT_FOG_FAR_FACTOR = 1.0;
+const DEFAULT_FOG_COLOUR = 0x000000;
+const DEFAULT_FOG_NEAR_FACTOR = 0.25;
+const DEFAULT_FOG_FAR_FACTOR = 1.4;
 
 const Shader = () => {
   const { viewer } = useContext(MiewContext);
