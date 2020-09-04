@@ -48,7 +48,7 @@
     "eslint-plugin-react-hooks": "^1.7.0",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
-    "node-sass": "^4.13.0",
+    "node-sass": "^4.13.1",
     "react-hot-loader": "^4.12.16",
     "sass-loader": "^8.0.0",
     "style-loader": "^1.0.0",
